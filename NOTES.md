@@ -1,6 +1,36 @@
 Presentation Notes
 ==================
 
+What's New in Rails 5
+---------------------
+
+Tema ove prezentacije su novine u dolazećoj Rails 5 verziji. Rails 5 RC verzija je objavljena početkom maja ove godine. U toku ove godine očekuje se zvanično izdanje nove verzije.
+
+Turbolinks 3.0 & ActionCable
+----------------------------
+
+Dve najveće novine u Rails 5 verziji su Turbolinks 3.0 i ActionCable.
+
+Turbolinks 3.0
+--------------
+
+Turbolinks 3.0 omogućava bržu navigaciju kroz web aplikaciju. To je Rails odgovor na sveprisutnije single-page aplikacije (SPA).
+
+How Turbolinks works
+--------------------
+
+Rails 4 se već isporučuje sa Turbolinks. Turbolinks koristi Ajax kako bi ubrzao renderovanje stranica u većini aplikacija. Radi tako što:
+
+ 1. presreće sve klikove ka linkovima na istom domenu
+ 2. menja URL u web browser-u koristeći HTML 5 History API
+ 3. zahteva novu stranicu koristeći XMLHttpRequest
+ 4. kada dobije stranicu, Turbolinks zamenjuje trenutni <body> element i spaja sadržaj <head> elementa
+
+Turbolinks 3.0: Partial Replacement
+--------------
+
+Problem sa Turbolinks je što zamenjuje celu stranicu, čak i slučajevima kada je nephodno zameniti samo deo stranice. Turbolinks 3.0 u Rails 5 nudi mogućnost zamene dela stranice kroz tzv. Partial Replacement. Turbolinks 3.0 kada menja sadržaj dela stranice zadržava JavaScript runtime, tekući DOM i parsirani CSS.
+
 ActionCable
 -----------
 
