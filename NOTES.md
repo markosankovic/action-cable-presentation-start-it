@@ -79,7 +79,7 @@ Kao gotovo rešenje ActionCable sa sobom donosi niz novih termina.
 
  - **Connection** se odnosi na instancu klase tipa `ActionCable::Connection::Base` koju ActionCable kreira za svaku WebSocket konekciju.
  - **Consumer** ili potrošač je klijent WebSocket konekcije.
- - **Channel** je enkapsulirana jedinica rada na koju se potrošač se pretplaćuje. Kanal ima sličnu ulogu kao i kontroler u MVC-u.
+ - **Channel** predstavlja logičku jedinicu rada na koju se potrošač pretplaćuje. Kanal ima sličnu ulogu kao i kontroler u MVC-u.
  - **Subscriber** je klijent pretplaćen na jedan ili više kanala.
  - **Subscription** ili pretplata je veza između pretplatnika i kanala.
  - **Pub/Sub** skraćeno od Publish/Subscribe je messaging pattern gde pošiljalac poruke(publisher) ne šalje poruke direktno određenim primaocima poruka(subscribers), već poruke šalje na kanal bez znanja o tome ko će sve primiti poruku na tom kanalu.
@@ -109,3 +109,20 @@ Visualisation of ActionCable in Production
 ------------------------------------------
 
 Upotrebom Redis-a i Redis adaptera moguće je pokrenuti veći broj ActionCable servera iza Load Balancer-a koji podržava WebSockets.
+
+Code
+----
+
+Prilikom kreiranja nove Rails 5 aplikacije ActionCable kreira nekoliko novih fajlova. Najbitniji su, na serverskoj strani connection.rb, a na klijentskoj cable.js.
+
+U fajlu connection.rb imamo definiciju klase `Connection` koja nasleđuje `ActionCable::Connection::Base`. U ovoj klasi se vrši autorizacija dolazeće konekcije. Ovo je deo handshake faze u WebSocket protokolu. Pretpostavlja se da je prethodno izvršena provera identiteta korisnika. Konekcije mogu da se identifikuju i na osnovu drugih vrednosti, ali je najčešći primer identifikovanje konekcije po korisniku. Kasnije se na osnovu korisnika mogu dohvatiti sve konekcije koje je taj korisnik otvorio i zatvoriti ih u slučaju brisanja korisnika, ili izmene prava pristupa.
+
+U fajlu cable.js klijentska strana kreira konzumer instancu konekcije. Kao prvi argument funkcije `ActionCable.createConsumer()` navodi se adresa do ActionCable servera. U ovom slučaju ActionCable server se pokreće kao In-App pa nije potrebno navoditi adresu. Da bi kolačići bili dostupni serverskoj strani, neophodno je pokrenuti ActionCable server na istom domenu, ili koristiti drugačiji način provere identiteta korisnika, npr. Token-based authentication.
+
+Naredni korak je generisanje kanala. Kao što je već rečeno, kanal je logička jedinica rada i ima sličnu ulogu kao i kontroler u MVC-u. Kreira se sa novim Rails generatorom za kanale, gde se navodi ime kanala i lista metoda koje će biti dostupne klijentskoj strani.
+
+Generisanje kanala kreira dva fajla, od kojih je room_channel.rb namenjen serverskoj strani, a room.coffee klijentskoj strani.
+
+U fajlu room_channel.rb na serverskoj strani imamo definiciju klase `RoomChannel` koja nasleđuje `ApplicationCable::Channel`. Metod `subscribed` se poziva u trenutku kada klijentska strana inicira pretplatu na ovaj kanal. Sa `stream_from` pozivom kreira se tzv. imenovani broadcasting koji se kasnije koristi za slanje poruka. Javni metod `speak` se zove direktno sa klijentske strane. U ovom konkretnom slučaju svi pretplatnici na ovaj kanal će dobiti istu poruku pri pozivu `ActionCable.server.broadcast` na prethodno imenovani broadcasting "room_channel". Moguće je suziti polje slanja poruke na specifičnu sobu tako što bi se "room_channel" argumentu dodao id konkretne sobe.
+
+U fajlu room_channel.js na klijentskoj strani kreiranje pretplate se vrši pozivom `App.cable.subscriptions.create` sa imenom kanala na koji se klijent pretplaćuje. Ovaj poziv će na serverskoj strani pozvati metod `subscribed`. Funkcijom `perform` sve javne metode na kanalu na serverskoj strani, izuzev callback metoda, se mogu pozvati sa klijentske strane kao udaljeni pozivi (RPC). Kada server bradcast-uje poruku, metod `received` na klijentskoj strani će biti pozvan sa podacima sa servera. ActionCable vrši automatsku serijalizaciju/deserijalizaciju podataka koji se razmenjuju.
