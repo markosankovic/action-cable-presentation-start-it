@@ -59,8 +59,6 @@ WebSocket: Standards
 
 WebSocket protokol je standardizovao IETF(Internet Engineering Task Force) u dokumentu pod nazivom "The WebSocket Protocol", a WebSocket interfejs koji koristimo u JavaScript-u W3C(World Wide Web Consortium) u dokumentu "The WebSocket API".
 
-U periodu pre i nakon standardizacije protokola koristila su se rešenja koja detektuju da browser ne podržava WebSockets, pa onda rade tzv. fallback na podržano rešenje za real-time komunikaciju poput: Polling, Long-polling, SSE itd.
-
 WebSocket: can-i-use-it
 -----------------------
 
@@ -122,7 +120,7 @@ ActionCable dolazi sa adapterima za Pub/Sub. Kao i drugi adapteri nudi jedinstve
 
 Podrazumevani adapter je async. Ovaj adapter je pogodan za korišćenje tokom razvoja aplikacije jer ne zahteva pokretanje dodatnih servisa.
 
-Produkciono okruženju podrazumeva pokretanje Rails aplikacije u više instanci servera i procesa. Za svaku instancu servera i svaki proces(worker) koji server pokrene, kreira se nova ActionCable instanca. Upotreba async adaptera u produkcionom okruženju ne garantuje isporuku poruka ka svim konekcijama.
+Produkciono okruženje podrazumeva pokretanje Rails aplikacije u više instanci servera i procesa. Za svaku instancu servera i svaki proces(worker) koji server pokrene, kreira se nova ActionCable instanca. Upotreba async adaptera u produkcionom okruženju ne garantuje isporuku poruka ka svim konekcijama.
 
 Redis je preporučeni subscription adapter koji koristi Redis Pub/Sub. Upotreba Redis adaptera za razliku od async garantuje isporuku poruka ka svim konekcijama.
 
