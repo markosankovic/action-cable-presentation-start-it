@@ -122,7 +122,7 @@ Podrazumevani adapter je async. Ovaj adapter je pogodan za korišćenje tokom ra
 
 Produkciono okruženje podrazumeva pokretanje Rails aplikacije u više instanci servera i procesa. Za svaku instancu servera i svaki proces(worker) koji server pokrene, kreira se nova ActionCable instanca. Upotreba async adaptera u produkcionom okruženju ne garantuje isporuku poruka ka svim konekcijama.
 
-Redis je preporučeni subscription adapter koji koristi Redis Pub/Sub. Upotreba Redis adaptera za razliku od async garantuje isporuku poruka ka svim konekcijama.
+Redis je preporučeni subscription adapter koji koristi Redis bazu podataka i njegov Pub/Sub sistem za poruke. Upotreba Redis adaptera za razliku od async garantuje isporuku poruka ka svim konekcijama.
 
 PostgreSQL ima LISTEN/NOTIFY komande koje su slične PUBLISH/SUBSCRIBE kod Redis-a.
 

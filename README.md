@@ -1,5 +1,5 @@
-# action-cable-presentation-start-it
+# what-is-new-in-rails-5-presentation-start-it
 
-Slides and Notes for the ActionCable presentation at Start·it scheduled for Mon May 30 2016 at 19h.
+Slides and Notes for the What's New in Rails 5 presentation at Start·it scheduled for Mon May 30 2016 at 19h.
 
 Presented by [zeroeleven](http://zeroeleven.rs).
